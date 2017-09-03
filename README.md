@@ -37,3 +37,15 @@ windows x86_64 bin/ascii_converter.exe
 git clone https://github.com/xrlin/AsciiArt.git
 go build -o /path/to/store/executable/file ./AsciiArt/*.go
 ```
+
+## ScreenShots
+Web UI
+
+![web-ui](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/web-ui.png)
+
+![example1](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example1.png)
+
+
+Terminal
+
+![example2](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example2.png)
