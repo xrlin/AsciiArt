@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ascii Art</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
+</head>
+
+<style>
+    .main {
+        position: absolute;
+        top: 200px;
+        width: 100%;
+    }
+
+    .form-field {
+        margin: 0 auto;
+        position: relative;
+        width: 600px;
+    }
+
+    .custom-container {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .wrapper {
+        height: 80%;
+        overflow: auto;
+    }
+
+    #ascii-text {
+        height: 100%;
+        font-weight: 500;
+        font-size: .01em;
+    }
+
+    .ascii-image-content {
+        height: auto;
+        max-width: 100%;
+    }
+
+    .field-wrapper {
+        padding-top: 16px;
+        padding-bottom: 8px;
+    }
+
+    .field-wrapper label {
+        color: rgba(0, 0, 0, .54);
+        padding-top: 10px;
+    }
+
+    .field-wrapper i {
+        color: rgba(0, 0, 0, .54);
+    }
+
+    .main-icon {
+        position: absolute;
+        top: 150px;
+        text-align: center;
+        width: 100%;
+    }
+</style>
+<body>
+<div class="main-icon">
+    <a href="https://github.com/xrlin/AsciiArt" target="_blank"
+       class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white mdui-color-theme-accent"
+       mdui-tooltip="{content: '查看 Github'}">
+        <i class="fa fa-github fa-lg" aria-hidden="true" style="color: #ff4081"></i>
+    </a>
+</div>
+<div class="main mdui-theme-accent-pink">
+    <form class="form-field" action="/ascii" id="form" method="post" enctype="multipart/form-data">
+        <input id="file-input-field" type="file" name="image_file" hidden>
+        <div class="mdui-textfield">
+            <i class="mdui-icon material-icons">cloud_upload</i>
+            <input id="file-name-field" name="image_file_name" class="mdui-textfield-input file-name"
+                   placeholder="本地上传"/>
+        </div>
+        <div class="mdui-textfield">
+            <i class="mdui-icon material-icons">insert_link</i>
+            <input id="file-link-field" name="image_link" class="mdui-textfield-input" placeholder="图片链接"/>
+        </div>
+        <div class="mdui-textfield">
+            <i class="mdui-icon material-icons" title="字符集">font_download</i>
+            <input name="characters" class="mdui-textfield-input" placeholder="字符集" value="M80V1i:*|, "/>
+        </div>
+        <div class="field-wrapper">
+            <label class="mdui-col-xs-1">切图</label>
+            <select name="sub_width" class="mdui-select mdui-col-xs-4" style="margin-left: .5em; margin-right: 3em;"
+                    mdui-select>
+                <option value="1">宽1px</option>
+                <option value="2">宽2px</option>
+                <option value="4">宽4px</option>
+                <option value="8">宽8px</option>
+                <option value="10" selected>宽10px</option>
+            </select>
+            <select name="sub_height" class="mdui-select mdui-col-xs-4" mdui-select>
+                <option value="1">长1px</option>
+                <option value="2">长2px</option>
+                <option value="4">长4px</option>
+                <option value="8">长8px</option>
+                <option value="10" selected>长10px</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <i class="mdui-icon material-icons mdui-col-xs-1" style="padding: 6px;">colorize</i>
+            <select name="bg" class="mdui-select mdui-col-xs-4" style="margin-left: .5em; margin-right: 2em;"
+                    mdui-select>
+                <option value="black" style="color: black" selected>背景黑色</option>
+                <option value="red" style="color:red">背景红色</option>
+                <option value="green" style="color: green">背景绿色</option>
+                <option value="blue" style="color: blue">背景蓝色</option>
+                <option value="gray" style="color: gray">背景灰色</option>
+            </select>
+            <select name="pen" class="mdui-select mdui-col-xs-4" mdui-select>
+                <option value="black" style="color: black">字体黑色</option>
+                <option value="red" style="color:red">字体红色</option>
+                <option value="green" style="color: green">字体绿色</option>
+                <option value="blue" style="color: blue">字体蓝色</option>
+                <option value="gray" style="color: gray" selected>字体灰色</option>
+            </select>
+        </div>
+        <div class="mdui-container custom-container">
+            <button id="submit"
+                    class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple mdui-color-theme-accent">生成字符画
+            </button>
+        </div>
+    </form>
+</div>
+<div class="mdui-dialog" id="example-4">
+    <div class="mdui-tab mdui-tab-full-width" id="example4-tab">
+        <a href="#ascii-text-wrapper" class="mdui-ripple">文本</a>
+        <a href="#ascii-image-wrapper" class="mdui-ripple">图片</a>
+    </div>
+    <div id="ascii-text-wrapper" class="mdui-p-a-2 wrapper">
+        <pre id="ascii-text"></pre>
+    </div>
+    <div id="ascii-image-wrapper" class="mdui-p-a-2 wrapper">
+        <img alt="图片不存在" id="ascii-image" src="" class="ascii-image-content">
+    </div>
+</div>
+
+<script>
+    var tab = new mdui.Tab('#example4-tab');
+    document.getElementById('example-4').addEventListener('open.mdui.dialog', function () {
+        tab.handleUpdate();
+    });
+</script>
+<script>
+    var $$ = mdui.JQ;
+    var inst = new mdui.Dialog('#example-4');
+    $$('#file-name-field').on('click focus', function (e) {
+        var self = this;
+        var fileInput = document.querySelector('#file-input-field');
+        fileInput.click();
+        fileInput.addEventListener("change", function (e) {
+            $$(self).val(e.target.files[0].name)
+        });
+    });
+    $$('#submit').on('click', function (e) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/ascii', true);
+        xhr.send(new FormData($$('#form')[0]));
+        e.preventDefault();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var data = xhr.responseText;
+                    var result = JSON.parse(data);
+                    $$('#ascii-text').text(result.ascii);
+                    $$('#ascii-image').attr('src', result.image);
+                    inst.open()
+                } else {
+                    data = xhr.responseText;
+                    result = JSON.parse(data);
+                    mdui.alert(result.error);
+                }
+            }
+        };
+    });
+
+
+</script>
+</body>
+</html>
