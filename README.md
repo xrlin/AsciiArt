@@ -42,10 +42,9 @@ go build -o /path/to/store/executable/file ./AsciiArt/*.go
 ## ScreenShots
 Web UI
 
-![example1](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example3.png)  
-
-
 ![web-ui](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/web-ui.png)
+
+![example1](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example3.png)  
 
 
 ![example1](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example1.png)
