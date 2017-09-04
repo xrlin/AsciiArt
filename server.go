@@ -32,31 +32,35 @@ type responseData struct {
 }
 
 func ascii(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			errorMessage, _ := json.Marshal(serverError{Error: err.(error).Error()})
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(errorMessage)
+		}
+	}()
 	r.ParseMultipartForm(0)
 	image_link := r.FormValue("image_link")
+
 	imageFile, _, err := r.FormFile("image_file")
-	characters := strings.Split(r.FormValue("characters"), "")
-	subWidth, err := strconv.Atoi(r.FormValue("sub_width"))
-	if err != nil {
-		errorMessage, _ := json.Marshal(serverError{Error: err.Error()})
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(errorMessage)
-		return
-	}
-	subHeight, err := strconv.Atoi(r.FormValue("sub_height"))
-	if err != nil {
-		errorMessage, _ := json.Marshal(serverError{Error: err.Error()})
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(errorMessage)
-		return
-	}
-	bgColor := r.FormValue("bg")
-	penColor := r.FormValue("pen")
 	defer func() {
 		if imageFile != nil {
 			imageFile.Close()
 		}
 	}()
+
+	characters := strings.Split(r.FormValue("characters"), "")
+	subWidth, err := strconv.Atoi(r.FormValue("sub_width"))
+	if err != nil {
+		panic(err)
+	}
+	subHeight, err := strconv.Atoi(r.FormValue("sub_height"))
+	if err != nil {
+		panic(err)
+	}
+	bgColor := r.FormValue("bg")
+	penColor := r.FormValue("pen")
 	var imgData io.ReadCloser
 	if err == nil && imageFile != nil {
 		imgData = io.ReadCloser(imageFile)
@@ -65,18 +69,12 @@ func ascii(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(image_link)
 		respImgData, err = http.Get(image_link)
 		if err != nil {
-			errorMessage, _ := json.Marshal(serverError{Error: err.Error()})
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write(errorMessage)
-			return
+			panic(err)
 		}
 		imgData = respImgData.Body
 	}
 	if err != nil {
-		errorMessage, _ := json.Marshal(serverError{Error: err.Error()})
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(errorMessage)
-		return
+		panic(err)
 	}
 	result, img, err := convert(imgData, characters, subWidth, subHeight, true, colors[bgColor], colors[penColor])
 	if err != nil {
@@ -87,10 +85,7 @@ func ascii(w http.ResponseWriter, r *http.Request) {
 	}
 	imgBase64, err := imageToBase64(img)
 	if err != nil {
-		errorMessage, _ := json.Marshal(serverError{Error: err.Error()})
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(errorMessage)
-		return
+		panic(err)
 	}
 	resp, _ := json.Marshal(responseData{Ascii: result, Image: imgBase64})
 	w.Write(resp)

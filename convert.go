@@ -67,10 +67,11 @@ func initImage(width, height int, bgColor color.RGBA) *image.NRGBA {
 func calculateAverageBrightness(img image.Image, rect image.Rectangle) float64 {
 	var averageBrightness float64
 	width, height := rect.Max.X-rect.Min.X, rect.Max.Y-rect.Min.Y
+	var brightness float64
 	for x := rect.Min.X; x < rect.Max.X; x++ {
 		for y := rect.Min.Y; y < rect.Max.Y; y++ {
 			r, g, b, _ := img.At(x, y).RGBA()
-			brightness := 0.299*float64(r>>8) + 0.587*float64(g>>8) + 0.114*float64(b>>8)
+			brightness = float64(r>>8+g>>8+b>>8) / 3
 			averageBrightness += brightness
 		}
 	}
@@ -79,7 +80,7 @@ func calculateAverageBrightness(img image.Image, rect image.Rectangle) float64 {
 }
 
 func getCharByBrightness(chars []string, brightness float64) string {
-	index := int(brightness * float64(len(chars)) / 256)
+	index := int(brightness*float64(len(chars))) >> 8
 	if index == len(chars) {
 		index--
 	}
@@ -108,7 +109,7 @@ func getDataFromUrl(imageUrl string) (io.ReadCloser, error) {
 }
 
 var colors map[string]color.RGBA = map[string]color.RGBA{"black": {0, 0, 0, 255},
-	"gray":  {128, 128, 128, 255},
+	"gray":  {140, 140, 140, 255},
 	"red":   {255, 0, 0, 255},
 	"green": {0, 128, 0, 255},
 	"blue":  {0, 0, 255, 255}}

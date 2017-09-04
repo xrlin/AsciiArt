@@ -6,63 +6,64 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
+    <style>
+        .main {
+            position: absolute;
+            top: 150px;
+            width: 100%;
+        }
+
+        .form-field {
+            margin: 0 auto;
+            position: relative;
+            width: 600px;
+        }
+
+        .custom-container {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .wrapper {
+            height: 80%;
+            overflow: auto;
+        }
+
+        #ascii-text {
+            height: 100%;
+            font-weight: 500;
+            font-size: .5rem;
+            line-height: 5px;
+        }
+
+        .ascii-image-content {
+            height: auto;
+            max-width: 100%;
+        }
+
+        .field-wrapper {
+            padding-top: 16px;
+            padding-bottom: 8px;
+        }
+
+        .field-wrapper label {
+            color: rgba(0, 0, 0, .54);
+            padding-top: 10px;
+        }
+
+        .field-wrapper i {
+            color: rgba(0, 0, 0, .54);
+        }
+
+        .main-icon {
+            position: absolute;
+            top: 100px;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
 </head>
 
-<style>
-    .main {
-        position: absolute;
-        top: 200px;
-        width: 100%;
-    }
-
-    .form-field {
-        margin: 0 auto;
-        position: relative;
-        width: 600px;
-    }
-
-    .custom-container {
-        text-align: center;
-        padding: 10px;
-    }
-
-    .wrapper {
-        height: 80%;
-        overflow: auto;
-    }
-
-    #ascii-text {
-        height: 100%;
-        font-weight: 500;
-        font-size: .01em;
-    }
-
-    .ascii-image-content {
-        height: auto;
-        max-width: 100%;
-    }
-
-    .field-wrapper {
-        padding-top: 16px;
-        padding-bottom: 8px;
-    }
-
-    .field-wrapper label {
-        color: rgba(0, 0, 0, .54);
-        padding-top: 10px;
-    }
-
-    .field-wrapper i {
-        color: rgba(0, 0, 0, .54);
-    }
-
-    .main-icon {
-        position: absolute;
-        top: 150px;
-        text-align: center;
-        width: 100%;
-    }
-</style>
 <body>
 <div class="main-icon">
     <a href="https://github.com/xrlin/AsciiArt" target="_blank"
@@ -109,18 +110,18 @@
             <i class="mdui-icon material-icons mdui-col-xs-1" style="padding: 6px;">colorize</i>
             <select name="bg" class="mdui-select mdui-col-xs-4" style="margin-left: .5em; margin-right: 2em;"
                     mdui-select>
-                <option value="black" style="color: black" selected>背景黑色</option>
-                <option value="red" style="color:red">背景红色</option>
-                <option value="green" style="color: green">背景绿色</option>
-                <option value="blue" style="color: blue">背景蓝色</option>
-                <option value="gray" style="color: gray">背景灰色</option>
+                <option value="black" style="color: black" selected>图片背景黑色</option>
+                <option value="red" style="color:red">图片背景红色</option>
+                <option value="green" style="color: green">图片背景绿色</option>
+                <option value="blue" style="color: blue">图片背景蓝色</option>
+                <option value="gray" style="color: gray">图片背景灰色</option>
             </select>
             <select name="pen" class="mdui-select mdui-col-xs-4" mdui-select>
-                <option value="black" style="color: black">字体黑色</option>
-                <option value="red" style="color:red">字体红色</option>
-                <option value="green" style="color: green">字体绿色</option>
-                <option value="blue" style="color: blue">字体蓝色</option>
-                <option value="gray" style="color: gray" selected>字体灰色</option>
+                <option value="black" style="color: black">图片字体黑色</option>
+                <option value="red" style="color:red">图片字体红色</option>
+                <option value="green" style="color: green">图片字体绿色</option>
+                <option value="blue" style="color: blue">图片字体蓝色</option>
+                <option value="gray" style="color: gray" selected>图片字体灰色</option>
             </select>
         </div>
         <div class="mdui-container custom-container">
@@ -152,13 +153,14 @@
 <script>
     var $$ = mdui.JQ;
     var inst = new mdui.Dialog('#example-4');
-    $$('#file-name-field').on('click focus', function (e) {
+    var fileInput = document.querySelector('#file-input-field');
+    fileInput.addEventListener("change", function (event) {
+        $$('#file-name-field').val(event.target.files[0].name)
+    });
+    $$('#file-name-field').on('click', function (e) {
         var self = this;
-        var fileInput = document.querySelector('#file-input-field');
         fileInput.click();
-        fileInput.addEventListener("change", function (e) {
-            $$(self).val(e.target.files[0].name)
-        });
+        e.preventDefault();
     });
     $$('#submit').on('click', function (e) {
         var xhr = new XMLHttpRequest();
