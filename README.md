@@ -30,10 +30,23 @@ Just use you browser to visit http://127.0.0.1:8080, you will get an handy web u
 
 ## Executable files in bin folder
 linux x86_64  bin/ascii_converter  
-windows x86_64 bin/ascii_converter.exe
+windows x86_64 bin/ascii_converter.exe  
+OSX  bin/ascii_converter_osx
 
 ## Build
 ```shell
 git clone https://github.com/xrlin/AsciiArt.git
 go build -o /path/to/store/executable/file ./AsciiArt/*.go
 ```
+
+## ScreenShots
+Web UI
+
+![web-ui](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/web-ui.png)
+
+![example1](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example1.png)
+
+
+Terminal
+
+![example2](https://raw.githubusercontent.com/xrlin/AsciiArt/master/screenshots/example2.png)
