@@ -15,7 +15,7 @@ Usually, it is enough only pass the image-path or image-url parameter.
 # Print the ascii text to a file.
 ./ascii_converter.exe -image-path="./test.png" > test.txt
 ```
-If you want to out an image file, just add the image-out and iamge-out-path options.
+If you want to output an image file, just add the image-out and iamge-out-path options.
 ```shell
 # this will create an image  with ascii strings.
 ./ascii_converter.exe -image-url="https://b-ssl.duitang.com/uploads/item/201406/28/20140628084407_WkunE.thumb.700_0.jpeg" -image-out-path="test.png" -image-out=true
