@@ -26,7 +26,7 @@ Besides, you can access all the functions with your browser. Just run:
 # This command will start a web server on 127.0.0.1:8080
 ./ascii_converter --server=true
 ```
-Just use you browser to visit http://127.0.0.1:8080, you will get an handy web ui to convert your image.
+Just use you browser to visit http://127.0.0.1:8080, you will get a handy web ui to convert your image.
 
 ## Executable files in bin folder
 linux x86_64  bin/ascii_converter  
