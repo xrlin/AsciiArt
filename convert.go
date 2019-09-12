@@ -128,6 +128,11 @@ func main() {
 	penColorType := flag.String("color", "gray", "The color of the ascii font in image file.(Only useful when image-out is true, red|gray|green|blue|black are available).")
 	flag.Parse()
 
+	if  os.Getenv("PORT") != "" {
+		temp := fmt.Sprintf(":%s", os.Getenv("PORT"))
+		bind = &temp
+	}
+
 	if *server {
 		startServer(*bind)
 	}
