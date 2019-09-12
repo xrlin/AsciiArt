@@ -1,1 +1,1 @@
-web: ./bin/ascii_converter --server=true
+web: ./bin/AsciiArt --server=true
